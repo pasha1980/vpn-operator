@@ -1,0 +1,45 @@
+version: '3'
+services:
+  operator:
+    build:
+      context: ../..
+      dockerfile: deployment/common/Dockerfile
+    image: registry.gitlab.com/khvalygin/tgvpn-operator/dev:latest
+    container_name: tgvpn-operator
+    ports:
+      - "8080:80/tcp"
+    env_file:
+      - .env.local
+    volumes:
+      - ./tmp/operator/storage:/operator/storage
+    networks:
+      - operator-net
+
+  database:
+    image: mysql:5.7
+    container_name: tgvpn-database
+    ports:
+      - "127.0.0.1:33061:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: tgvpn
+    volumes:
+      - ./tmp/database:/var/lib/mysql
+    networks:
+      - operator-net
+
+  redis:
+    image: redis:7.0
+    container_name: tgvpn-redis
+    ports:
+      - "127.0.0.1:63791:6379"
+    command: >
+      --requirepass secret
+    volumes:
+      - ./tmp/redis:/data
+    networks:
+      - operator-net
+
+networks:
+  operator-net:
+    driver: bridge

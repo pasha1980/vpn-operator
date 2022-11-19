@@ -1,0 +1,22 @@
+version: '3'
+services:
+  operator:
+    image: registry.gitlab.com/khvalygin/tgvpn-operator/dev:latest
+    container_name: tgvpn-operator
+    restart: unless-stopped
+    ports:
+      - "8080:80/tcp"
+    env_file:
+      - .env.local
+    volumes:
+      - vpn-operator-storage:/operator/storage
+    networks:
+      - operator-net
+
+networks:
+  operator-net:
+    driver: bridge
+
+volumes:
+  vpn-operator-storage:
+    external: false
