@@ -5,6 +5,8 @@ import "os"
 type EnvironmentConfig struct {
 	HttpAddress string
 
+	StoragePath string
+
 	DatabaseLink string
 
 	RedisLink     string
@@ -17,6 +19,8 @@ var Config *EnvironmentConfig
 func initEnvironment() {
 	Config = &EnvironmentConfig{
 		HttpAddress: os.Getenv("HTTP_ADDRESS"),
+
+		StoragePath: os.Getenv("STORAGE_PATH"),
 
 		DatabaseLink: os.Getenv("DATABASE_DSN"),
 
