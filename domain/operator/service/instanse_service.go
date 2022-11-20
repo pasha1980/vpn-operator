@@ -4,7 +4,7 @@ import (
 	"time"
 	"vpn-operator/config"
 	"vpn-operator/domain/infrastructure/apiError"
-	"vpn-operator/domain/infrastructure/database/model"
+	"vpn-operator/domain/operator/model"
 )
 
 type InstanceService struct {
