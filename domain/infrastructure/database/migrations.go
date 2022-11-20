@@ -1,6 +1,7 @@
 package database
 
 import (
+	"log"
 	"vpn-operator/config"
 	"vpn-operator/domain/operator/model"
 )
@@ -12,6 +13,6 @@ func RunMigrations() {
 	err = config.DB.AutoMigrate(&model.Client{})
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }

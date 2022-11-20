@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/go-redis/redis/v9"
+	"log"
 	"strconv"
 )
 
@@ -15,4 +16,9 @@ func initRedis() {
 		Password: Config.RedisPassword,
 		DB:       database,
 	})
+
+	_, err := Redis.Ping(Context).Result()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
