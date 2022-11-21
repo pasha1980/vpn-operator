@@ -12,7 +12,7 @@ func InitHttp() error {
 	h.HTTPErrorHandler = httpErrorHandler()
 
 	instanceRoutes(h)
-	userRoutes(h)
+	clientRoutes(h)
 
 	return h.Start(config.Config.HttpAddress)
 }
@@ -20,12 +20,20 @@ func InitHttp() error {
 func instanceRoutes(h *echo.Echo) {
 
 	c := controller.InstanceController{
-		Service: service.InstanceService{},
+		Service: &service.InstanceService{},
 	}
 
 	h.POST("/manager/hook", c.Hook)
 }
 
-func userRoutes(h *echo.Echo) {
+func clientRoutes(h *echo.Echo) {
+	c := controller.CustomerController{
+		Service: &service.CustomerService{},
+	}
 
+	customerApi := h.Group("", authMiddleware)
+
+	customerApi.POST("/client/:service/:server_id", c.CreateClient)
+	customerApi.DELETE("/client/:id", c.DeleteClient)
+	//customerApi.GET("/instance/statuses", c.GetStatuses)
 }

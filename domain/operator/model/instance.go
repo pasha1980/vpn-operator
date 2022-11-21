@@ -2,6 +2,7 @@ package model
 
 import (
 	"encoding/json"
+	"fmt"
 	"gorm.io/gorm"
 	"io/ioutil"
 	"net/http"
@@ -42,7 +43,7 @@ func (i *Instance) GetStatus() (availableServices []string, version string, err 
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", i.HttpUrl+"/api/status", nil)
+	req, _ := http.NewRequest(http.MethodGet, i.HttpUrl+"/api/status", nil)
 	req.Header.Set("Authorization", i.Secret)
 	resp, err := client.Do(req)
 	if err != nil {
@@ -63,4 +64,54 @@ func (i *Instance) GetStatus() (availableServices []string, version string, err 
 	}
 
 	return i.AvailableServices, i.Version, nil
+}
+
+func (i *Instance) IsSupportService(service string) bool {
+	for _, availableService := range i.AvailableServices {
+		if availableService == service {
+			return true
+		}
+	}
+	return false
+}
+
+func (i *Instance) GetClientConfiguration(client *Client) (*Client, error) {
+	type instanceCreateClientResponse struct {
+		ID       int    `json:"id"`
+		FileName string `json:"fileName"`
+		Config   string `json:"client"`
+	}
+	var clientData instanceCreateClientResponse
+
+	clientIdParam := fmt.Sprintf("%d", client.ID)
+
+	httpClient := &http.Client{}
+	req, _ := http.NewRequest(http.MethodPost, i.HttpUrl+"/api/"+client.Service+"/client/"+clientIdParam, nil)
+	req.Header.Set("Authorization", i.Secret)
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := ioutil.ReadAll(resp.Body)
+	json.Unmarshal(respBody, &clientData)
+
+	client.Config = &clientData.Config
+	client.ConfigFileName = &clientData.FileName
+
+	return client, nil
+}
+
+func (i *Instance) RemoveClientConfiguration(client *Client) error {
+	clientIdParam := fmt.Sprintf("%d", client.ID)
+	httpClient := &http.Client{}
+	req, _ := http.NewRequest(http.MethodDelete, i.HttpUrl+"/api/"+client.Service+"/client/"+clientIdParam, nil)
+	req.Header.Set("Authorization", i.Secret)
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	return nil
 }

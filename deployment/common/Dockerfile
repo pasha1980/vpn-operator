@@ -21,7 +21,7 @@ FROM alpine:3.16.3 as app
 RUN apk add bash
 
 RUN mkdir -p /operator/storage
-ENV STORAGE_PATH /operator/storage
+ENV STORAGE_PATH /operator/storage/
 
 COPY --from=builder /app/app /operator/
 EXPOSE 80

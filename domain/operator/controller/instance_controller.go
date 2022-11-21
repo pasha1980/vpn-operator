@@ -8,7 +8,7 @@ import (
 )
 
 type InstanceController struct {
-	Service service.InstanceService
+	Service *service.InstanceService
 }
 
 func (c InstanceController) Hook(ctx echo.Context) error {
