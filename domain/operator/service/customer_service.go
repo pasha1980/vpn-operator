@@ -66,5 +66,7 @@ func (s *CustomerService) DeleteClient(clientId int) error {
 		return err
 	}
 
+	config.DB.Delete(&client)
+
 	return nil
 }
