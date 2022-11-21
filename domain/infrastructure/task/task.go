@@ -1,18 +1,16 @@
 package task
 
 import (
-	"time"
 	"vpn-operator/domain/operator/job"
 )
 
 var tasks = []func(){
 	job.InitHealthChecks,
+	job.InitUpdateAuthKey,
 }
 
 func InitTasks() {
-	for range time.Tick(time.Minute) {
-		for _, task := range tasks {
-			go task()
-		}
+	for _, task := range tasks {
+		go task()
 	}
 }

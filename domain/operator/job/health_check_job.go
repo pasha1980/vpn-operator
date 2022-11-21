@@ -1,15 +1,18 @@
 package job
 
 import (
+	"time"
 	"vpn-operator/config"
 	"vpn-operator/domain/operator/model"
 )
 
 func InitHealthChecks() {
-	var instances []model.Instance
-	config.DB.Find(&instances)
-	for _, instance := range instances {
-		go healthCheck(instance)
+	for range time.Tick(20 * time.Second) {
+		var instances []model.Instance
+		config.DB.Find(&instances)
+		for _, instance := range instances {
+			go healthCheck(instance)
+		}
 	}
 }
 
