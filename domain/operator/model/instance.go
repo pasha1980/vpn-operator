@@ -16,7 +16,7 @@ type Instance struct {
 	IsActive          bool
 	UpDate            *time.Time
 	Secret            string
-	AvailableServices []string
+	AvailableServices []string `gorm:"json"`
 	Country           string
 	Region            *string
 }
