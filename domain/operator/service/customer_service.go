@@ -38,6 +38,8 @@ func (s *CustomerService) CreateClient(service string, serverId int) (*model.Cli
 		return nil, err
 	}
 
+	config.DB.Save(client)
+
 	return client, nil
 }
 
