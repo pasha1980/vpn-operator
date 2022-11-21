@@ -1,3 +1,3 @@
 package config
 
-const SecretKeyLength = 10000
+const SecretKeyLength = 500
