@@ -22,7 +22,7 @@ type Instance struct {
 	City              string
 }
 
-func (i Instance) Ping() bool {
+func (i *Instance) Ping() bool {
 	resp, err := http.Get(i.HttpUrl + "/ping")
 	if err != nil {
 		return false
@@ -35,7 +35,7 @@ func (i Instance) Ping() bool {
 	return true
 }
 
-func (i Instance) GetStatus() (availableServices []string, version string, err error) {
+func (i *Instance) GetStatus() (availableServices []string, version string, err error) {
 	type instanceServiceResponse struct {
 		Service map[string]bool `json:"service"`
 		Version string          `json:"version"`
