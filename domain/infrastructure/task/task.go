@@ -1,9 +1,18 @@
 package task
 
-var tasks = []func(){}
+import (
+	"time"
+	"vpn-operator/domain/operator/job"
+)
+
+var tasks = []func(){
+	job.InitHealthChecks,
+}
 
 func InitTasks() {
-	for _, job := range tasks {
-		go job()
+	for range time.Tick(time.Minute) {
+		for _, task := range tasks {
+			go task()
+		}
 	}
 }

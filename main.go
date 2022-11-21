@@ -13,10 +13,11 @@ func main() {
 
 	database.RunMigrations()
 
+	task.InitTasks()
+
 	err := api.InitHttp()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	task.InitTasks()
 }
