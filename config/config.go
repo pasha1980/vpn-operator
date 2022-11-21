@@ -5,5 +5,4 @@ func InitConfig() {
 	initContext()
 	initDatabase()
 	initRedis()
-	initAuth()
 }
