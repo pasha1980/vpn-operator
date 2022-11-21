@@ -68,8 +68,7 @@ func (s InstanceService) InstanceDown(
 ) *apiError.InstanceHookError {
 	var instance model.Instance
 	config.DB.Where(&model.Instance{
-		IP:      IP,
-		HttpUrl: HttpUrl,
+		IP: IP,
 	}).First(&instance)
 
 	if instance.ID == 0 {
