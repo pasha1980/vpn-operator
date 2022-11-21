@@ -13,7 +13,7 @@ func main() {
 
 	database.RunMigrations()
 
-	task.InitTasks()
+	go task.InitTasks()
 
 	err := api.InitHttp()
 	if err != nil {
