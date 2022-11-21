@@ -28,7 +28,8 @@ func (c InstanceController) Hook(ctx echo.Context) error {
 			*hook.Secret,
 			*hook.Version,
 			*hook.Country,
-			hook.Region,
+			*hook.Region,
+			*hook.City,
 		)
 		break
 

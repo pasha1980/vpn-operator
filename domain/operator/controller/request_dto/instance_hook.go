@@ -8,4 +8,5 @@ type InstanceHook struct {
 	Version           *string  `json:"version"`
 	Country           *string  `json:"country"`
 	Region            *string  `json:"region"`
+	City              *string  `json:"city"`
 }

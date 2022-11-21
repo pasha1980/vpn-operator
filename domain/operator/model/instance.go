@@ -18,7 +18,8 @@ type Instance struct {
 	Secret            string
 	AvailableServices []string `gorm:"json"`
 	Country           string
-	Region            *string
+	Region            string
+	City              string
 }
 
 func (i Instance) Ping() bool {

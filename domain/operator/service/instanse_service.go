@@ -17,7 +17,8 @@ func (s InstanceService) InstanceUp(
 	Secret string,
 	Version string,
 	Country string,
-	Region *string,
+	Region string,
+	City string,
 ) *apiError.InstanceHookError {
 	var instance model.Instance
 
@@ -33,11 +34,8 @@ func (s InstanceService) InstanceUp(
 		instance.Version = Version
 		instance.Country = Country
 		instance.Region = Region
-
+		instance.City = City
 		instance.HttpUrl = HttpURL
-		if !instance.Ping() {
-			instance.HttpUrl = existingInstance.HttpUrl
-		}
 	} else {
 		instance = model.Instance{
 			IP:                IP,
@@ -47,6 +45,7 @@ func (s InstanceService) InstanceUp(
 			Version:           Version,
 			Country:           Country,
 			Region:            Region,
+			City:              City,
 		}
 
 		if instance.Ping() {
