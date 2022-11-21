@@ -6,7 +6,7 @@ import (
 )
 
 func GenerateNewApiKey() error {
-	newToken := utils.GenerateRandomString(500)
+	newToken := utils.GenerateRandomString(config.SecretKeyLength)
 	_, err := config.Redis.Set(config.Context, "secret_key", newToken, 0).Result()
 	return err
 }
