@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"vpn-operator/domain/infrastructure/apiError"
 )
 
 func httpErrorHandler() func(err error, ctx echo.Context) {
@@ -14,13 +15,13 @@ func httpErrorHandler() func(err error, ctx echo.Context) {
 		var data interface{}
 
 		if err.Error() == "Internal" {
-			//baseError := err.(apiError.BaseErrorInterface)
-			//errorData := baseError.GetErrorData()
-			//
-			//statusCode = errorData.Code
-			//errorType = errorData.ErrorType
-			//message = errorData.Message
-			//data = errorData.Data
+			baseError := err.(apiError.BaseErrorInterface)
+			errorData := baseError.GetErrorData()
+
+			statusCode = errorData.Code
+			errorType = errorData.ErrorType
+			message = errorData.Message
+			data = errorData.Data
 		} else {
 			switch err.(type) {
 			case *echo.HTTPError:
