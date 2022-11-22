@@ -33,7 +33,8 @@ func clientRoutes(h *echo.Echo) {
 
 	customerApi := h.Group("", authMiddleware)
 
-	customerApi.POST("/client/:service/:server_id", c.CreateClient)
-	customerApi.DELETE("/client/:id", c.DeleteClient)
-	//customerApi.GET("/instance/statuses", c.GetStatuses)
+	clientApi := customerApi.Group("/client")
+	clientApi.POST("/:service/:server_id", c.CreateClient)
+	clientApi.DELETE("/:id", c.DeleteClient)
+	clientApi.GET("/:id", c.GetClient)
 }

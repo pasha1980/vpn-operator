@@ -70,3 +70,13 @@ func (s *CustomerService) DeleteClient(clientId int) error {
 
 	return nil
 }
+
+func (s *CustomerService) GetClientConfig(clientId int) (*model.Client, error) {
+	var client model.Client
+	err := config.DB.First(&client, clientId).Error
+	if err != nil {
+		return nil, apiError.NewNotFoundError("Client not found", nil)
+	}
+
+	return client.GetClientConfig()
+}

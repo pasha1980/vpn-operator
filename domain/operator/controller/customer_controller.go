@@ -46,3 +46,23 @@ func (c *CustomerController) DeleteClient(ctx echo.Context) error {
 
 	return ctx.NoContent(204)
 }
+
+func (c *CustomerController) GetClient(ctx echo.Context) error {
+	clientId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		return apiError.NewBadRequestError("Client ID is invalid", nil)
+	}
+
+	client, err := c.Service.GetClientConfig(clientId)
+	if err != nil {
+		return err
+	}
+
+	responseDto := response_dto.Client{
+		ID:       client.ID,
+		FileName: *client.ConfigFileName,
+		Config:   *client.Config,
+	}
+
+	return ctx.JSON(200, &responseDto)
+}

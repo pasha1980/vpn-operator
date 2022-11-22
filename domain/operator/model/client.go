@@ -36,3 +36,14 @@ func (c *Client) SaveConfigToStorage() error {
 func (c *Client) DeleteConfigFromStorage() error {
 	return os.Remove(config.Config.StoragePath + *c.ConfigFileName)
 }
+
+func (c *Client) GetClientConfig() (*Client, error) {
+	rawConfig, err := os.ReadFile(config.Config.StoragePath + *c.ConfigFileName)
+	if err != nil {
+		return nil, err
+	}
+
+	encodedConfig := base64.StdEncoding.EncodeToString(rawConfig)
+	c.Config = &encodedConfig
+	return c, nil
+}
