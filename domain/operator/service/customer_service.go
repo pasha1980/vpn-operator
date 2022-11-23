@@ -13,7 +13,7 @@ type CustomerService struct {
 func (s *CustomerService) CreateClient(service string, serverId int) (*model.Client, error) {
 	var instance model.Instance
 	err := config.DB.First(&instance, serverId).Error
-	if err != nil {
+	if err != nil || !instance.IsActive {
 		return nil, apiError.NewNotFoundError("Server not found", nil)
 	}
 
