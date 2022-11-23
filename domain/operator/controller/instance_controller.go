@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
+	"log"
 	"vpn-operator/domain/infrastructure/apiError"
 	"vpn-operator/domain/operator/controller/request_dto"
 	"vpn-operator/domain/operator/service"
@@ -17,6 +18,8 @@ func (c InstanceController) Hook(ctx echo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	log.Println(hook)
 
 	var hookError *apiError.InstanceHookError
 	switch hook.Action {
