@@ -15,13 +15,14 @@ func GetIpLocation(ip string) (country string, regiom string, city string, err e
 		Country string   `xml:"country_name"`
 	}
 
-	resp, err := http.Get("https://ipapi.co/xml")
-	if err != nil {
-		return
-	}
+	ipapiClient := http.Client{}
+	req, err := http.NewRequest(http.MethodGet, "https://ipapi.co/"+ip+"/xml/", nil)
+	req.Header.Set("User-Agent", "ipapi.co/#go-v1.5")
+	resp, err := ipapiClient.Do(req)
 	defer resp.Body.Close()
 
-	xmlBytes, err := ioutil.ReadAll(resp.Body)
+	xmlBytes, _ := ioutil.ReadAll(resp.Body)
+
 	var data ipapiResponse
 	xml.Unmarshal(xmlBytes, &data)
 	log.Println("Defining location of ip")
