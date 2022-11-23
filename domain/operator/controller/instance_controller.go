@@ -19,7 +19,7 @@ func (c InstanceController) Hook(ctx echo.Context) error {
 		return err
 	}
 
-	log.Println(hook)
+	log.Println(*hook.Secret, *hook.Version, *hook.City, *hook.Country, *hook.Region)
 
 	var hookError *apiError.InstanceHookError
 	switch hook.Action {
