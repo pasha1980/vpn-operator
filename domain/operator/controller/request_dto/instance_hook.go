@@ -6,7 +6,4 @@ type InstanceHook struct {
 	AvailableServices []string `json:"availableServices"`
 	Secret            *string  `json:"secret"`
 	Version           *string  `json:"version"`
-	Country           *string  `json:"country"`
-	Region            *string  `json:"region"`
-	City              *string  `json:"city"`
 }

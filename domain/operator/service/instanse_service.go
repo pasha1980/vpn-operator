@@ -4,6 +4,7 @@ import (
 	"time"
 	"vpn-operator/config"
 	"vpn-operator/domain/infrastructure/apiError"
+	"vpn-operator/domain/infrastructure/utils"
 	"vpn-operator/domain/operator/model"
 )
 
@@ -16,9 +17,6 @@ func (s InstanceService) InstanceUp(
 	AvailableServices []string,
 	Secret string,
 	Version string,
-	Country string,
-	Region string,
-	City string,
 ) *apiError.InstanceHookError {
 	var instance model.Instance
 
@@ -27,14 +25,16 @@ func (s InstanceService) InstanceUp(
 		IP: IP,
 	}).First(&existingInstance)
 
+	country, region, city, _ := utils.GetIpLocation(IP)
+
 	if existingInstance.ID != 0 {
 		instance = existingInstance
 		instance.AvailableServices = AvailableServices
 		instance.Secret = Secret
 		instance.Version = Version
-		instance.Country = Country
-		instance.Region = Region
-		instance.City = City
+		instance.Country = country
+		instance.Region = region
+		instance.City = city
 		instance.HttpUrl = HttpURL
 	} else {
 		instance = model.Instance{
@@ -43,9 +43,9 @@ func (s InstanceService) InstanceUp(
 			AvailableServices: AvailableServices,
 			Secret:            Secret,
 			Version:           Version,
-			Country:           Country,
-			Region:            Region,
-			City:              City,
+			Country:           country,
+			Region:            region,
+			City:              city,
 		}
 
 		if instance.Ping() {
