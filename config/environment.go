@@ -1,6 +1,9 @@
 package config
 
-import "os"
+import (
+	"github.com/joho/godotenv"
+	"os"
+)
 
 type EnvironmentConfig struct {
 	HttpAddress string
@@ -17,6 +20,8 @@ type EnvironmentConfig struct {
 var Config *EnvironmentConfig
 
 func initEnvironment() {
+	_ = godotenv.Load(".env.local")
+
 	Config = &EnvironmentConfig{
 		HttpAddress: os.Getenv("HTTP_ADDRESS"),
 
