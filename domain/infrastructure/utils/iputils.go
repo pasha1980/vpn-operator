@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/xml"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -25,9 +24,6 @@ func GetIpLocation(ip string) (country string, regiom string, city string, err e
 
 	var data ipapiResponse
 	xml.Unmarshal(xmlBytes, &data)
-	log.Println("Defining location of ip")
-	log.Println(string(xmlBytes))
-	log.Println(data)
 	return data.Country, data.Region, data.City, nil
 
 }
