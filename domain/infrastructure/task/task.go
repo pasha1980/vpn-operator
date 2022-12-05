@@ -7,6 +7,7 @@ import (
 var tasks = []func(){
 	job.InitHealthChecks,
 	job.InitUpdateAuthKey,
+	job.InitDigitalOceanHealthCheck,
 }
 
 func InitTasks() {

@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-type EnvironmentConfig struct {
+type environmentConfig struct {
 	HttpAddress string
 
 	StoragePath string
@@ -15,14 +15,17 @@ type EnvironmentConfig struct {
 	RedisLink     string
 	RedisPassword string
 	RedisDatabase string
+
+	DigitalOceanToken string
+	DigitalOceanTag   string
 }
 
-var Config *EnvironmentConfig
+var Config *environmentConfig
 
 func initEnvironment() {
 	_ = godotenv.Load(".env.local")
 
-	Config = &EnvironmentConfig{
+	Config = &environmentConfig{
 		HttpAddress: os.Getenv("HTTP_ADDRESS"),
 
 		StoragePath: os.Getenv("STORAGE_PATH"),
@@ -32,5 +35,8 @@ func initEnvironment() {
 		RedisLink:     os.Getenv("REDIS_HOST"),
 		RedisPassword: os.Getenv("REDIS_PASSWORD"),
 		RedisDatabase: os.Getenv("REDIS_DB"),
+
+		DigitalOceanToken: os.Getenv("DO_TOKEN"),
+		DigitalOceanTag:   os.Getenv("DO_DROPLET_TAG"),
 	}
 }
