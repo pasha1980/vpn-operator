@@ -18,11 +18,11 @@ type doDroplet struct {
 
 func (d *doDroplet) IsAvailable() bool {
 	pinger, _ := ping.NewPinger(d.Instance.IP)
-	pinger.PacketsSent = 5
+	pinger.Timeout = 5 * time.Second
 	pinger.Run()
 
 	stat := pinger.Statistics()
-	if stat.PacketsRecv == 5 {
+	if stat.PacketsRecv > 0 {
 		return true
 	}
 
@@ -37,9 +37,6 @@ func (d *doDroplet) Restart() error {
 		_, _, err = actionService.PowerCycle(config.Context, d.Droplet.ID)
 		if err != nil {
 			_, _, err = actionService.PowerOff(config.Context, d.Droplet.ID)
-			if err != nil {
-				return err
-			}
 			_, _, err = actionService.PowerOn(config.Context, d.Droplet.ID)
 			if err != nil {
 				return err
@@ -82,7 +79,6 @@ func actualizeDropletList() {
 			continue
 		}
 
-		config.Log.Write("Get DigitalOcean instance #"+droplet.Name, "digital ocean")
 		doDroplets = append(
 			doDroplets,
 			doDroplet{

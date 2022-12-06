@@ -12,7 +12,7 @@ type redisLogger struct {
 }
 
 func (l redisLogger) Write(message string, logType string) {
-	logs := Redis.Get(Context, "operator_log").String()
-	logs = logs + "\n" + time.Now().String() + " - [" + logType + "] " + message
+	logs, _ := Redis.Get(Context, "operator_log").Result()
+	logs = logs + "  ||  " + time.Now().Format("2006-01-02 15:04:05") + " - [" + logType + "] " + message
 	Redis.Set(Context, "operator_log", logs, 0)
 }
