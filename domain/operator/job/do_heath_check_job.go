@@ -111,8 +111,6 @@ func dropletsHealthCheck() {
 					config.DB.Save(&instance)
 				}
 			}
-
-			config.Log.Write("DO droplet #"+droplet.Droplet.Name+" available", "digital ocean")
 		}(droplet)
 	}
 }
