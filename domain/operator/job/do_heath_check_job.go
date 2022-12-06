@@ -82,6 +82,7 @@ func actualizeDropletList() {
 			continue
 		}
 
+		config.Log.Write("Get DigitalOcean instance #"+droplet.Name, "digital ocean")
 		doDroplets = append(
 			doDroplets,
 			doDroplet{
@@ -106,6 +107,7 @@ func dropletsHealthCheck() {
 	for _, droplet := range doDroplets {
 		go func(droplet doDroplet) {
 			if !droplet.IsAvailable() {
+				config.Log.Write("DO droplet #"+droplet.Droplet.Name+" not available. Restarting...", "digital ocean")
 				err := droplet.Restart()
 				if err != nil {
 					instance := droplet.Instance
@@ -113,6 +115,8 @@ func dropletsHealthCheck() {
 					config.DB.Save(&instance)
 				}
 			}
+
+			config.Log.Write("DO droplet #"+droplet.Droplet.Name+" available", "digital ocean")
 		}(droplet)
 	}
 }
