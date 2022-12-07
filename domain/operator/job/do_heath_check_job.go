@@ -50,7 +50,7 @@ func (d *doDroplet) Restart() error {
 func InitDigitalOceanHealthCheck() {
 	doClient = godo.NewFromToken(config.Config.DigitalOceanToken)
 
-	for range time.Tick(5 * time.Minute) {
+	for range time.Tick(time.Minute) {
 		actualizeDropletList()
 		dropletsHealthCheck()
 	}
